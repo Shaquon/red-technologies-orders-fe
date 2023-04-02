@@ -1,0 +1,21 @@
+.headerContainer {
+  width: 100vw;
+  /* background-color: #f5f5f5; */
+  background-color: #d00e0e;
+  display: flex;
+  padding: 0.5rem;
+  padding-bottom: 0;
+}
+
+.headerImg {
+  width: 2em;
+  margin-right: 0.5rem;
+}
+
+.headerImg > img {
+  width: 100%;
+}
+
+.headerTitle {
+  justify-self: flex-end;
+}
