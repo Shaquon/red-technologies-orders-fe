@@ -40,7 +40,7 @@ const CreateOrder = () => {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => handleCreateOrder(data);
 
-  console.log(watch("OrderType"));
+  // console.log(watch("OrderType"));
 
   const handleCreateOrder = async (data: Inputs) => {
     const url = "https://red-candidate-web.azurewebsites.net/api/Orders";

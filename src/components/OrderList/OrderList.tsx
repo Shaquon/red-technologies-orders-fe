@@ -1,11 +1,19 @@
 import { Box } from "@mui/material";
 import { IOrders } from "../../pages/types";
 import Card from "@mui/material/Card";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+  GridRowSelectionModel,
+  GridValueGetterParams,
+} from "@mui/x-data-grid";
 import styles from "./OrderList.module.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { SelectedContext } from "../../context/selected-context";
 
 const OrderList = (props: { orders: IOrders[] | [] }) => {
+  const selected = useContext(SelectedContext);
+  // const [selection, setSelection] = useState<GridRowSelectionModel>();
   const [rows, setRows] = useState<IOrders[] | []>([]);
 
   if (props.orders.length === 0) {
@@ -39,6 +47,9 @@ const OrderList = (props: { orders: IOrders[] | [] }) => {
     <Box sx={{ height: 400, width: "100%" }}>
       <DataGrid
         getRowId={(row) => row.orderId}
+        onRowSelectionModelChange={(newSelection) => {
+          selected.updateSelected(newSelection);
+        }}
         rows={rows}
         columns={columns}
         pageSizeOptions={[5]}

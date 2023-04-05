@@ -9,7 +9,7 @@ import { IOrders } from "./types";
 
 function Home() {
   const [orders, setOrders] = useState<IOrders[] | []>([]);
-  const [selected, setSelected] = useState<IOrders[] | []>([]);
+  const [selected, setSelected] = useState<string[] | []>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ function Home() {
       >
         <SearchBar />
         <CreateOrder />
-        <DeleteSelected />
+        <DeleteSelected selectedItems={selected} />
         <OrderTypeMenu />
       </Box>
       {isLoading && (
