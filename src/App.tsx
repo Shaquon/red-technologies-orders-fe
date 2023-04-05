@@ -1,14 +1,14 @@
-import Home from './pages/Home'
-import styles from './App.module.css'
-import Header from "./components/Header/Header"
+import Home from "./pages/Home";
+import Header from "./components/Header/Header";
+import { Container } from "@mui/material";
 
 function App() {
   return (
-    <div className={styles.app}>
+    <Container maxWidth="xl" sx={{ backgroundColor: "white" }}>
       <Header />
       <Home />
-    </div>
-  )
+    </Container>
+  );
 }
 
-export default App
+export default App;

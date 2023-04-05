@@ -15,7 +15,7 @@ const SearchBar = () => {
       <TextField
         label="Search"
         id="search"
-        sx={{ borderBottomRightRadius: 0 }}
+        sx={{ width: "60%", borderBottomRightRadius: 0 }}
       />
       <Button
         variant="contained"
