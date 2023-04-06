@@ -1,11 +1,21 @@
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, useFormState } from "react-hook-form";
 import { useHttpClient } from "../../hooks/useHttpClient";
 import { useState } from "react";
-import { Box, Modal, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  InputLabel,
+  MenuItem,
+  Modal,
+  Select,
+  SelectChangeEvent,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { style } from "@mui/system";
-import { IOrders } from "../../pages/types";
+import { IOrders, OrderType } from "../../pages/types";
+import { ORDER_TYPE } from "../../context/order-type-context";
 
 type Inputs = {
   OrderType: string;
@@ -13,7 +23,7 @@ type Inputs = {
   CreatedByUserName: string;
 };
 
-const CreateOrder = () => {
+const CreateOrder = (props: { updateOrderList: () => void }) => {
   const style = {
     position: "absolute",
     top: "50%",
@@ -30,38 +40,48 @@ const CreateOrder = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [orderTypeSelection, setOrderTypeSelection] =
+    useState<OrderType>("Standard");
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<Inputs>();
+  /*
+  "Standard",
+  "SaleOrder",
+  "PurchaseOrder",
+  "TransferOrder",
+  "ReturnOrder",
+*/
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => handleCreateOrder(data);
+  const { register, handleSubmit, watch, getValues } = useForm<Inputs>();
 
-  // console.log(watch("OrderType"));
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    handleCreateOrder(data);
+    handleClose();
+  };
 
   const handleCreateOrder = async (data: Inputs) => {
     const url = "https://red-candidate-web.azurewebsites.net/api/Orders";
-
     try {
       await sendRequest(
         url,
         "POST",
         JSON.stringify({
-          OrderType: "Standard",
-          CustomerName: "sdsd",
-          CreatedByUserName: "dsds",
+          OrderType: orderTypeSelection,
+          CustomerName: getValues().CustomerName,
+          CreatedByUserName: getValues().CreatedByUserName,
         }),
         {
           "Content-Type": "application/json",
           ApiKey: "b7b77702-b4ec-4960-b3f7-7d40e44cf5f4",
         }
       );
+
+      await props.updateOrderList();
     } catch (err) {
       console.log("err", err);
     }
+  };
+  const handleSelectChange = (event: SelectChangeEvent) => {
+    setOrderTypeSelection(event.target.value as OrderType);
   };
 
   return (
@@ -93,11 +113,26 @@ const CreateOrder = () => {
                 flexDirection: "column",
               }}
             >
-              <TextField
-                id="order-type"
+              <InputLabel id="order-type-select-label">Order Type</InputLabel>
+              <Select
+                labelId="order-type-select-label"
+                id="order-type-select"
+                value={orderTypeSelection}
                 label="Order Type"
-                {...(register("OrderType"), { required: true })}
-              />
+                onChange={handleSelectChange}
+              >
+                <MenuItem value={ORDER_TYPE.STANDARD}>Standard</MenuItem>
+                <MenuItem value={ORDER_TYPE.SALE_ORDER}>Sale Order</MenuItem>
+                <MenuItem value={ORDER_TYPE.PURCHASE_ORDER}>
+                  Purchase Order
+                </MenuItem>
+                <MenuItem value={ORDER_TYPE.TRANSFER_ORDER}>
+                  Transfer Order
+                </MenuItem>
+                <MenuItem value={ORDER_TYPE.RETURN_ORDER}>
+                  Return Order
+                </MenuItem>
+              </Select>
               <TextField
                 id="customer-name"
                 label="Customer Name"

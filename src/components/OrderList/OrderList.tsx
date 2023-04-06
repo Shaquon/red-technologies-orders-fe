@@ -1,31 +1,14 @@
 import { Box } from "@mui/material";
 import { IOrders } from "../../pages/types";
 import Card from "@mui/material/Card";
-import {
-  DataGrid,
-  GridColDef,
-  GridRowSelectionModel,
-  GridValueGetterParams,
-} from "@mui/x-data-grid";
-import styles from "./OrderList.module.css";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useContext, useEffect, useState } from "react";
 import { SelectedContext } from "../../context/selected-context";
 
 const OrderList = (props: { orders: IOrders[] | [] }) => {
   const selected = useContext(SelectedContext);
-  // const [selection, setSelection] = useState<GridRowSelectionModel>();
-  const [rows, setRows] = useState<IOrders[] | []>([]);
 
-  if (props.orders.length === 0) {
-    return (
-      <div className="todo-list center">
-        <Card>
-          <h2>No Orders found. Maybe</h2>
-          <button>Create Order</button>
-        </Card>
-      </div>
-    );
-  }
+  const [rows, setRows] = useState<IOrders[] | []>([]);
 
   const columns: GridColDef[] = [
     { field: "orderId", headerName: "Order ID", width: 300 },
@@ -45,23 +28,32 @@ const OrderList = (props: { orders: IOrders[] | [] }) => {
 
   return (
     <Box sx={{ height: 400, width: "100%" }}>
-      <DataGrid
-        getRowId={(row) => row.orderId}
-        onRowSelectionModelChange={(newSelection) => {
-          selected.updateSelected(newSelection);
-        }}
-        rows={rows}
-        columns={columns}
-        pageSizeOptions={[5]}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
+      {props.orders.length === 0 ? (
+        <div className="todo-list center">
+          <Card>
+            <h2>No Orders found. Maybe</h2>
+            <button>Create Order</button>
+          </Card>
+        </div>
+      ) : (
+        <DataGrid
+          getRowId={(row) => row.orderId}
+          onRowSelectionModelChange={(newSelection) => {
+            selected.updateSelected(newSelection);
+          }}
+          rows={rows}
+          columns={columns}
+          pageSizeOptions={[5]}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
+              },
             },
-          },
-        }}
-        checkboxSelection
-      />
+          }}
+          checkboxSelection
+        />
+      )}
     </Box>
   );
 };

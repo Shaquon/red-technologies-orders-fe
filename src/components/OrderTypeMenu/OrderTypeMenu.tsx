@@ -1,23 +1,37 @@
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import React from "react";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
+import { useContext, useState } from "react";
+import { OrderTypeContext, ORDER_TYPE } from "../../context/order-type-context";
+import { OrderType } from "../../pages/types";
 
-const OrderTypeMenu = () => {
+const OrderTypeMenu = (props: { updateOrdersByType: () => void }) => {
+  const orderTypeContext = useContext(OrderTypeContext);
+
+  const handleSelectionChange = (event: SelectChangeEvent) => {
+    orderTypeContext.updateOrderType(event.target.value as OrderType);
+    props.updateOrdersByType();
+  };
+
   return (
     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
       <InputLabel id="order-type-select">Order Type</InputLabel>
       <Select
         labelId="order-type-select"
         id="order-type-select"
-        value="Order Type"
+        value={orderTypeContext.selectedOrderType}
         label="Order Type"
+        onChange={handleSelectionChange}
       >
-        <MenuItem value="standard">
-          <em>Standard</em>
-        </MenuItem>
-        <MenuItem value={"Sale Order"}>Sale Order</MenuItem>
-        <MenuItem value={"Purchase Order"}>Purchase Order</MenuItem>
-        <MenuItem value={"Transfer Order"}>Transfer Order</MenuItem>
-        <MenuItem value={"Return Order"}>Return Order</MenuItem>
+        <MenuItem value={ORDER_TYPE.STANDARD}>Standard Order</MenuItem>
+        <MenuItem value={ORDER_TYPE.TRANSFER_ORDER}>Transfer Order</MenuItem>
+        <MenuItem value={ORDER_TYPE.PURCHASE_ORDER}>Purchase Order</MenuItem>
+        <MenuItem value={ORDER_TYPE.SALE_ORDER}>Sale Order</MenuItem>
+        <MenuItem value={ORDER_TYPE.RETURN_ORDER}>Return Order</MenuItem>
       </Select>
     </FormControl>
   );

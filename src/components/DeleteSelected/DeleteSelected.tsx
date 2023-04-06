@@ -1,10 +1,40 @@
 import Button from "@mui/material/Button";
-import React from "react";
+import React, { useContext } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { SelectedContext } from "../../context/selected-context";
+import { useHttpClient } from "../../hooks/useHttpClient";
 
-const DeleteSelected = (props: { selectedItems: string[] }) => {
+const DeleteSelected = (props: { updateOrderList: () => void }) => {
+  const { sendRequest } = useHttpClient();
+  const selected = useContext(SelectedContext);
+  const selectedArr = [...selected.selected];
+
+  for (let sel of selectedArr) {
+    sel = `${sel}`;
+  }
+
+  const stringifiedSelectedOrders = JSON.stringify(selectedArr);
+
+  const url = "https://red-candidate-web.azurewebsites.net/api/Orders/Delete";
+
+  const onDeleteHandler = async () => {
+    try {
+      await sendRequest(url, "POST", stringifiedSelectedOrders, {
+        "Content-Type": "application/json",
+        ApiKey: "b7b77702-b4ec-4960-b3f7-7d40e44cf5f4",
+      });
+      await props.updateOrderList();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <Button variant="contained" startIcon={<DeleteIcon />}>
+    <Button
+      variant="contained"
+      onClick={onDeleteHandler}
+      startIcon={<DeleteIcon />}
+    >
       Delete Selected
     </Button>
   );

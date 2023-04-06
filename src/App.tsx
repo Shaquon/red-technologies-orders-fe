@@ -4,9 +4,13 @@ import { Container } from "@mui/material";
 import { SelectedContext } from "./context/selected-context";
 import { useCallback, useState } from "react";
 import { GridRowSelectionModel } from "@mui/x-data-grid";
+import { OrderTypeContext } from "./context/order-type-context";
+import { OrderType } from "./pages/types";
 
 function App() {
   const [selected, setSelected] = useState<GridRowSelectionModel>([]);
+  const [selectedOrderType, setSelectedOrderType] =
+    useState<OrderType>("Standard");
 
   const updateSelected = useCallback(
     (selectedOrders: GridRowSelectionModel) => {
@@ -15,18 +19,33 @@ function App() {
     []
   );
 
+  const changeSelectedType = async (orderType: OrderType) => {
+    await setSelectedOrderType(orderType);
+  };
+
+  const updateSelectedOrderType = useCallback((orderType: OrderType) => {
+    changeSelectedType(orderType);
+  }, []);
+
   return (
-    <SelectedContext.Provider
+    <OrderTypeContext.Provider
       value={{
-        selected: selected,
-        updateSelected: updateSelected,
+        selectedOrderType: selectedOrderType,
+        updateOrderType: updateSelectedOrderType,
       }}
     >
-      <Container maxWidth="xl" sx={{ backgroundColor: "white" }}>
-        <Header />
-        <Home />
-      </Container>
-    </SelectedContext.Provider>
+      <SelectedContext.Provider
+        value={{
+          selected: selected,
+          updateSelected: updateSelected,
+        }}
+      >
+        <Container maxWidth="xl" sx={{ backgroundColor: "white" }}>
+          <Header />
+          <Home />
+        </Container>
+      </SelectedContext.Provider>
+    </OrderTypeContext.Provider>
   );
 }
 
