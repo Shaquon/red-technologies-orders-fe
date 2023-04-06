@@ -6,8 +6,8 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { useContext, useState } from "react";
-import { OrderTypeContext, ORDER_TYPE } from "../../context/order-type-context";
-import { OrderType } from "../../pages/types";
+import { OrderTypeContext, ORDER_TYPE } from "../context/order-type-context";
+import { OrderType } from "../pages/types";
 
 const OrderTypeMenu = (props: { updateOrdersByType: () => void }) => {
   const orderTypeContext = useContext(OrderTypeContext);

@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import { useForm, SubmitHandler, useFormState } from "react-hook-form";
-import { useHttpClient } from "../../hooks/useHttpClient";
+import { useHttpClient } from "../hooks/useHttpClient";
 import { useState } from "react";
 import {
   Box,
@@ -14,8 +14,8 @@ import {
   Typography,
 } from "@mui/material";
 import { style } from "@mui/system";
-import { IOrders, OrderType } from "../../pages/types";
-import { ORDER_TYPE } from "../../context/order-type-context";
+import { IOrders, OrderType } from "../pages/types";
+import { ORDER_TYPE } from "../context/order-type-context";
 
 type Inputs = {
   OrderType: string;
@@ -43,14 +43,6 @@ const CreateOrder = (props: { updateOrderList: () => void }) => {
   const [orderTypeSelection, setOrderTypeSelection] =
     useState<OrderType>("Standard");
 
-  /*
-  "Standard",
-  "SaleOrder",
-  "PurchaseOrder",
-  "TransferOrder",
-  "ReturnOrder",
-*/
-
   const { register, handleSubmit, watch, getValues } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -71,7 +63,7 @@ const CreateOrder = (props: { updateOrderList: () => void }) => {
         }),
         {
           "Content-Type": "application/json",
-          ApiKey: "b7b77702-b4ec-4960-b3f7-7d40e44cf5f4",
+          ApiKey: process.env.API_KEY,
         }
       );
 

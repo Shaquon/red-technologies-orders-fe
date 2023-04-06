@@ -1,8 +1,8 @@
 import Button from "@mui/material/Button";
 import React, { useContext } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { SelectedContext } from "../../context/selected-context";
-import { useHttpClient } from "../../hooks/useHttpClient";
+import { SelectedContext } from "../context/selected-context";
+import { useHttpClient } from "../hooks/useHttpClient";
 
 const DeleteSelected = (props: { updateOrderList: () => void }) => {
   const { sendRequest } = useHttpClient();
@@ -21,7 +21,7 @@ const DeleteSelected = (props: { updateOrderList: () => void }) => {
     try {
       await sendRequest(url, "POST", stringifiedSelectedOrders, {
         "Content-Type": "application/json",
-        ApiKey: "b7b77702-b4ec-4960-b3f7-7d40e44cf5f4",
+        ApiKey: process.env.API_KEY,
       });
       await props.updateOrderList();
     } catch (err) {

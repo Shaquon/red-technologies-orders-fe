@@ -1,17 +1,16 @@
 import { Box, CircularProgress, Container, Divider } from "@mui/material";
 import { useCallback, useContext, useEffect, useState } from "react";
-import CreateOrder from "../components/CreateOrder/CreateOrder";
-import DeleteSelected from "../components/DeleteSelected/DeleteSelected";
-import OrderList from "../components/OrderList/OrderList";
-import OrderTypeMenu from "../components/OrderTypeMenu/OrderTypeMenu";
-import SearchBar from "../components/SearchBar/SearchBar";
+import CreateOrder from "../components/CreateOrder";
+import DeleteSelected from "../components/DeleteSelected";
+import OrderList from "../components/OrderList";
+import OrderTypeMenu from "../components/OrderTypeMenu";
+import SearchBar from "../components/SearchBar";
 import { OrderTypeContext } from "../context/order-type-context";
 import { IOrders, OrderType } from "./types";
 
 function Home() {
   const [orders, setOrders] = useState<IOrders[] | []>([]);
   const [isLoading, setIsLoading] = useState(false);
-  // const [filtered]
   const orderType = useContext(OrderTypeContext);
 
   const loadedOrders = async () => {
@@ -21,7 +20,7 @@ function Home() {
         "https://red-candidate-web.azurewebsites.net/api/Orders",
         {
           headers: {
-            ApiKey: "b7b77702-b4ec-4960-b3f7-7d40e44cf5f4",
+            ApiKey: process.env.API_KEY as string,
           },
         }
       );

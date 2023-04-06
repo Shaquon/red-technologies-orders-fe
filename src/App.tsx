@@ -1,5 +1,5 @@
 import Home from "./pages/Home";
-import Header from "./components/Header/Header";
+import Header from "./components/Header";
 import { Container } from "@mui/material";
 import { SelectedContext } from "./context/selected-context";
 import { useCallback, useState } from "react";

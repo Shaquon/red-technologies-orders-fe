@@ -1,9 +1,9 @@
 import { Box } from "@mui/material";
-import { IOrders } from "../../pages/types";
+import { IOrders } from "../pages/types";
 import Card from "@mui/material/Card";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useContext, useEffect, useState } from "react";
-import { SelectedContext } from "../../context/selected-context";
+import { SelectedContext } from "../context/selected-context";
 
 const OrderList = (props: { orders: IOrders[] | [] }) => {
   const selected = useContext(SelectedContext);
